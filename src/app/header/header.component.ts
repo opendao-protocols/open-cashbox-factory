@@ -56,16 +56,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         this.networkString.name = 'Kovan';
         break;
       }
-      case 'rinkeby': {
-        this.networkString.show = true;
-        this.networkString.name = 'Rinkeby';
-        break;
-      }
-      case 'ropsten': {
-        this.networkString.show = true;
-        this.networkString.name = 'Ropsten';
-        break;
-      }
       default: {
         $('#unknownNetModal').modal('show');
         break;
