@@ -1,0 +1,237 @@
+<div class="content" role="main" style="background: black;">
+    <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1 text-center">
+                    <div>
+                        <div class="row">
+                            <div class="col-md-12" style="color: white;">
+                                <h3>{{ contractData.cashboxTokenName }}</h3>
+                                <br>
+                                <p>
+                                    Deploy to this CashBox to become an on-chain LP counterparty
+                                    to the {{ contractData.assetTokenName }}. <br>
+                                </p>
+                            </div>
+                        </div>
+
+                        <form #form="ngForm">
+
+                            <div class="row mt-md-3">
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control text-center" placeholder="0"
+                                        [(ngModel)]="userInput.buyCashbox.amt" name="buyCashboxAmount"
+                                        style="background: #F4F5F8; border-radius: 6px; box-shadow: none;" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-main btn-block" (click)="preBuyCashBoxToken()">Deposit
+                                        {{ contractData.cashTokenSymbol }} and get CashBox Tokens</button>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control text-center" placeholder="0"
+                                        [(ngModel)]="userInput.burnCashbox.amt" name="burnCashboxAmount"
+                                        style="background: #F4F5F8; border-radius: 6px; box-shadow: none;" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-main btn-block" (click)="preBurnCashBoxToken()">Redeem
+                                        CashBox Tokens for {{ contractData.assetTokenSymbol }}</button>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control text-center" placeholder="0"
+                                        [(ngModel)]="userInput.redeemAssetToken.amt" name="redeemAssetTokenAmount"
+                                        style="background: #F4F5F8; border-radius: 6px; box-shadow: none;" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-main btn-block" (click)="preRedeemAssetToken()">Sell
+                                        {{ contractData.assetTokenSymbol }} and get
+                                        {{ contractData.cashTokenSymbol }}</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <br>
+                        <br>
+                        <div class="row col-md-12" style="color: white;">
+                            <div *ngIf="contractData.cashEnabled === false"
+                                class="col-md-6 custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitches1">
+                                <label class="custom-control-label" for="customSwitches1"
+                                    (click)="approveInfiniteCash()">{{ contractData.cashTokenSymbol }} Infinite
+                                    Allowances</label>
+                            </div>
+                            <div *ngIf="contractData.assetEnabled === false"
+                                class="col-md-6 custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitches2">
+                                <label class="custom-control-label" for="customSwitches2"
+                                    (click)="approveInfiniteAsset()">{{ contractData.assetTokenSymbol }} Infinite
+                                    Allowances</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row" style="height: 100%">
+                                <div class="col-md-10 offset-md-1 section"
+                                    style=" background-color: white; border-radius: 12px;">
+                                    <h3 class="section-heading">Stats</h3>
+                                    <table class="table text-left width-lg white-bg">
+                                        <tbody>
+                                            <tr>
+                                                <td>CashBox Description:</td>
+                                                <td class="text-break">
+                                                    Perpetual Counterparty to {{ contractData.assetTokenName }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ contractData.cashTokenSymbol }} in Cashbox:</td>
+                                                <td>{{ toDecimalDisp(contractData.cashboxCashBal, 2) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ contractData.assetTokenSymbol }} in CashBox:</td>
+                                                <td>{{ toDecimalDisp(contractData.cashboxAssetBal, 2) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total CashBox tokens in circulation:</td>
+                                                <td>{{ toDecimalDisp(contractData.cashboxTotalSupply, 2) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ contractData.assetTokenSymbol }} price in
+                                                    {{ contractData.cashTokenSymbol }}:</td>
+                                                <td>{{ toDecimalDisp(contractData.assetToCashRate, 2) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CashBox market cap ceiling:</td>
+                                                <td>
+                                                    <span *ngIf="contractData.cashboxCap == '0'">-</span>
+                                                    <span
+                                                        *ngIf="contractData.cashboxCap != '0'">{{ toDecimalDisp(contractData.cashboxCap, 2) }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CashBox current market cap:</td>
+                                                <td>{{ toDecimalDisp(contractData.cashboxValuation, 2) }}
+                                                    {{ contractData.cashTokenSymbol }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Asset Explorer:</td>
+                                                <td>
+                                                    <span *ngIf="contractData.cashboxUrl">
+                                                        <a href="{{ contractData.cashboxUrl }}" target="_blank"
+                                                            class="link">Link</a>
+                                                    </span>
+                                                    <span *ngIf="!contractData.cashboxUrl">-</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-10 offset-md-1 section"
+                                    style=" background-color: white; border-radius: 12px;">
+                                    <h3 class="section-heading">Your Balances</h3>
+                                    <table class="table text-left width-lg white-bg">
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ contractData.assetTokenSymbol }} in your wallet:</td>
+                                                <td>{{ toDecimalDisp(contractData.userAssetTokenBal, 2) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CashBox token in your wallet:</td>
+                                                <td>{{ toDecimalDisp(contractData.userCashboxBal, 2) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ contractData.cashTokenSymbol }} in your wallet:</td>
+                                                <td>{{ toDecimalDisp(contractData.userCashBal, 2) }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <br>
+                            <br>
+                            <br>
+
+                            <div class="row">
+                                <div class="col-md-10 offset-md-1 section"
+                                    style=" background-color: white; border-radius: 12px; word-break: break-word;">
+                                    <h3 class="section-heading">Contract Addresses</h3>
+                                    <table class="table text-left white-bg">
+                                        <tbody>
+                                            <tr>
+                                                <td>CashBox Address:</td>
+                                                <td><a href="{{ etherscanPrefix }}{{ contractData.cashboxAddress }}"
+                                                        class="link"
+                                                        target="_blank">{{ contractData.cashboxAddress }}</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-break">{{ contractData.cashTokenSymbol }} Address: </td>
+                                                <td><a href="{{ etherscanPrefix }}{{ contractData.cashTokenAddress }}"
+                                                        class="link"
+                                                        target="_blank">{{ contractData.cashTokenAddress }}</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-break">{{ contractData.assetTokenSymbol }} Address:</td>
+                                                <td><a href="{{ etherscanPrefix }}{{ contractData.assetTokenAddress }}"
+                                                        class="link"
+                                                        target="_blank">{{ contractData.assetTokenAddress }}</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="cashboxModal" tabindex="-1" role="dialog" aria-labelledby="cashboxModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="py20 px10">
+                    <h4 class="modal-text"> {{ modalData.content }}
+                    </h4>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-pink btn-block"
+                                (click)="modalData.funcCall()">{{ modalData.buttonText }}</button>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="btn btn-primary btn-pink btn-block" data-dismiss="modal"
+                                aria-label="Close">Cancel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

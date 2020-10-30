@@ -1,0 +1,83 @@
+<header style="background: #000000; padding-top: 2.5em; padding-bottom: 2.2em;">
+    <div class="toolbar" role="banner">
+        <a [routerLink]="['']">
+            <img src="assets/img/open-cashbox-logo.png" style="margin-left: 2em; max-height: 45px;" />
+        </a>
+        <div class="spacer"></div>
+        <a href="https://opendao.io/beta" target="_blank">
+            <div class="asset btn btn-grey-box">
+                <span style="color: #ff8686;">BETA</span>
+            </div>
+        </a>
+        <div class="asset btn btn-grey-box">
+            <span class="dot"></span>
+            <span *ngIf="networkString">{{ networkString.name }}</span>
+        </div>
+        <a class="d-none d-sm-block asset btn btn-grey-box" id="account">{{ trucateAddress(userAddress) }}</a>
+        <a *ngIf="userAddress" class="asset btn text-right btn-grey-box" (click)="disconnectWallet()">Disconnect</a>
+    </div>
+</header>
+
+<div class="modal fade" id="walletConnectionModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    role="dialog" aria-labelledby="walletConnectionModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color: #F4F5F8;">
+            <div class="modal-body text-center">
+                <div class="py30">
+                    <h2>Connect with:</h2>
+                    <br>
+                    <a class="asset btn wallet-connect-btns" (click)="connect('metamask')">
+                        <img src="/assets/img/metamask-logo.png" class="wallet-btn-logo" alt="Metamask logo">
+                        Metamask</a>
+                    <a class="asset btn wallet-connect-btns" (click)="connect('wallet-connect')">
+                        <img src="/assets/img/wallet-connect-logo.png" class="wallet-btn-logo" alt="Metamask logo">
+                        Wallet Connect</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="unknownNetModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="kovanNetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="py30">
+                    <h2>Switch to Public Ethereum Network!</h2>
+                    <p class="lead">Please switch to the any Public Ethereum Network to continue using OTL
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="noMetaMaskModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="noMetaMaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="py30">
+                    <h2>Metamask Not Found!</h2>
+                    <p class="lead">Connection to Blockchain could not be established. Please install Metamask plugin
+                        for your browser from <a href="https://metamask.io/" target="_blank">metamask.io</a> and then
+                        try again.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="walletRejectModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="walletRejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="py30">
+                    <h2>Wallet Connection Denied!</h2>
+                    <p class="lead">Please Accept Wallet Connection Request.</p>
+                    <button class="btn btn-primary" (click)="reloadPage()">Try Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

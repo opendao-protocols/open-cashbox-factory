@@ -1,0 +1,121 @@
+<div>
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="portlet portlet--height-full">
+                    <div class="portlet__head">
+                        <div class="portlet__head-caption">
+                            <div class="portlet__head-title">
+                                <div class="row" style="
+                                padding-top: 1em;
+                                padding-bottom: 1em;">
+                                    <div class="col-md-7">
+                                        <h3 *ngIf="!showAllCashBoxes" class="portlet__head-text">Your Deployed CashBoxes
+                                        </h3>
+                                        <h3 *ngIf="showAllCashBoxes" class="portlet__head-text">All Deployed CashBoxes
+                                        </h3>
+
+                                    </div>
+                                    <div class="col-md-5">
+
+                                        <button *ngIf="!showAllCashBoxes"
+                                            class="btn btn-rg btn-secondary btn-pink btn-block"
+                                            style="background: #FA596B !important; color: #fff !important; "
+                                            (click)="toggleAllCashboxSwitch()">View All CashBoxes
+                                        </button>
+                                        <button *ngIf="showAllCashBoxes"
+                                            class="btn btn-rg btn-secondary btn-pink btn-block"
+                                            style="background: #FA596B !important; color: #fff !important; "
+                                            (click)="toggleAllCashboxSwitch()">View Your CashBoxes
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet__body py0 px0">
+                        <div class="asset-list">
+                            <div class="labels row">
+                                <div class="col-sm-12 col-4 text-center d-none d-sm-block">
+                                    <label>Name</label>
+                                </div>
+                            </div>
+                            <div class="assets">
+                                <a class="asset" *ngFor="let cashbox of cashBoxData"
+                                    [routerLink]="['/cashbox', cashbox.cashboxAddress]">
+                                    <div class="col-sm-12 text-center d-none d-sm-block">
+                                        <div class="balance text-center">
+                                            <div>{{ cashbox.name }}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <br>
+                                <div *ngIf="cashBoxData.length==0" class="col-sm-12 col-12 text-center">
+                                    <span>
+                                        <h6 class="d-none d-sm-block text-center">No CashBox Deployed Yet</h6>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="portlet portlet--height-full">
+                    <div class="portlet__head">
+                        <div class="portlet__head-caption">
+                            <div class="portlet__head-title">
+                                <h3 class="portlet__head-text">Deploy a New CashBox</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet__body">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <form [formGroup]="formdata" (ngSubmit)="deployNewAsset(formdata.value)">
+                                    <div class="form-group row ">
+                                        <label class="col-md-4">Document Url</label>
+                                        <input type="text" class="form-control col-md-8" name="url" placeholder="url"
+                                            formControlName="url">
+                                        <br />
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="col-md-4">Cash Token</label>
+                                        <input type="text" class="form-control col-md-8" name="cashTokenAddrs"
+                                            placeholder="Erc20 Token Address" formControlName="cashTokenAddrs">
+                                        <br />
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="col-md-4">Asset Token</label>
+                                        <input type="text" class="form-control col-md-8" name="assetTokenAddrs"
+                                            placeholder="Erc20 Token Address" formControlName="assetTokenAddrs">
+                                        <br />
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="col-md-4">Rate</label>
+                                        <input type="number" class="form-control col-md-8" name="assetToCashRate"
+                                            formControlName="assetToCashRate">
+                                        <br />
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="col-md-4">Cap</label>
+                                        <input type="number" class="form-control col-md-8" name="cashCap"
+                                            placeholder="1000" formControlName="cashCap">
+                                        <br />
+                                    </div>
+                                    <div class="form-group row ">
+                                        <div class="col-md-8 offset-md-4" style="padding: 0;">
+                                            <input type="submit" class="forsubmit btn btn-lg btn-light-pink btn-block"
+                                                value="Submit">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
