@@ -75,38 +75,28 @@
                             <div class="col-lg-8">
                                 <form [formGroup]="formdata" (ngSubmit)="deployNewAsset(formdata.value)">
                                     <div class="form-group row ">
-                                        <label class="col-md-4">Document Url</label>
-                                        <input type="text" class="form-control col-md-8" name="url" placeholder="url"
-                                            formControlName="url">
-                                        <br />
-                                    </div>
-                                    <div class="form-group row ">
                                         <label class="col-md-4">Cash Token</label>
-                                        <input type="text" class="form-control col-md-8" name="cashTokenAddrs"
-                                            placeholder="Erc20 Token Address" formControlName="cashTokenAddrs">
-                                        <br />
+                                        <select formControlName="cashToken" class="form-control col-md-8">
+                                            <option disabled>Select Cash Token</option>
+                                            <option>Choose Token</option>
+                                            <option *ngFor="let token of cashTokens | keyvalue">{{token.key}}</option>
+                                        </select>
                                     </div>
                                     <div class="form-group row ">
-                                        <label class="col-md-4">Asset Token</label>
-                                        <input type="text" class="form-control col-md-8" name="assetTokenAddrs"
-                                            placeholder="Erc20 Token Address" formControlName="assetTokenAddrs">
-                                        <br />
-                                    </div>
-                                    <div class="form-group row ">
-                                        <label class="col-md-4">Rate</label>
+                                        <label class="col-md-4">Price</label>
                                         <input type="number" class="form-control col-md-8" name="assetToCashRate"
                                             formControlName="assetToCashRate">
                                         <br />
                                     </div>
                                     <div class="form-group row ">
                                         <label class="col-md-4">Cap</label>
-                                        <input type="number" class="form-control col-md-8" name="cashCap"
-                                            placeholder="1000" formControlName="cashCap">
+                                        <input type="text" class="form-control col-md-8" name="cashCap"
+                                            formControlName="cashCap">
                                         <br />
                                     </div>
                                     <div class="form-group row ">
                                         <div class="col-md-8 offset-md-4" style="padding: 0;">
-                                            <input type="submit" class="forsubmit btn btn-lg btn-light-pink btn-block"
+                                            <input type="submit" [disabled]="!formdata.valid" class="forsubmit btn btn-lg btn-light-pink btn-block"
                                                 value="Submit">
                                         </div>
                                     </div>

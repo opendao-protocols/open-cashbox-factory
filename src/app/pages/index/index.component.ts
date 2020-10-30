@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ethers } from 'ethers';
 import { BigNumber } from 'bignumber.js';
@@ -29,6 +29,7 @@ export class IndexComponent implements OnInit {
   public web3: any;
   public userAddress: any;
   public Contracts: any;
+  public contractAddresses: any;
 
   public cashBoxData = [];
   public showAllCashBoxes = false;
@@ -50,11 +51,9 @@ export class IndexComponent implements OnInit {
 
   private createDeployForm() {
     this.formdata = new FormGroup({
-      url: new FormControl(),
-      cashTokenAddrs: new FormControl(),
-      assetTokenAddrs: new FormControl(),
-      assetToCashRate: new FormControl(),
-      cashCap: new FormControl(0),
+      cashToken: new FormControl('', [Validators.required]),
+      assetToCashRate: new FormControl('', [Validators.required]),
+      cashCap: new FormControl({value: '100,000,000', disabled: true}),
     });
   }
 
@@ -80,16 +79,21 @@ export class IndexComponent implements OnInit {
       state: 'secondary',
       message: 'Loading App...'
     });
-    const contractAddresses = await this.getContractAddresses();
+    this.contractAddresses = await this.getContractAddresses();
 
     // In case of unknown networks
-    if (typeof contractAddresses === 'undefined') { return; }
+    if (typeof this.contractAddresses === 'undefined') { return; }
 
-    this.initAllContracts(contractAddresses);
+    this.initAllContracts(this.contractAddresses);
 
     await this.initData();
     cApp.unblockPage();
     // console.log(this.userCashBoxData);
+  }
+
+  get cashTokens() {
+    if (this.contractAddresses === undefined) return {};
+    return this.contractAddresses.cashTokens;
   }
 
   private async getContractAddresses() {
@@ -130,38 +134,28 @@ export class IndexComponent implements OnInit {
 
   private async initCashbox(cashbox) {
     const CashBoxC = this.initContract(cashbox.cashboxAddress, CashBox.abi);
-    CashBoxC.symbol().then(symbol => {
-      cashbox.symbol = symbol;
-    });
     CashBoxC.name().then(name => {
       cashbox.name = name;
     });
   }
 
   public async deployNewAsset(form) {
-    // input check
-    for (const key of Object.keys(form)) {
-      if (form[key] === null || form[key] === '') {
-        if (key !== 'url') return;
-      }
-    }
-    form.url = form.url || '';
+    const cashTokenAddr = this.contractAddresses.cashTokens[form.cashToken];
+    if (cashTokenAddr === undefined || cashTokenAddr === '') return;
 
-    const CashErc20C = this.initContract(form.cashTokenAddrs, ERC20Detailed.abi);
+    const CashErc20C = this.initContract(cashTokenAddr, ERC20Detailed.abi);
     const decimals = await CashErc20C.decimals();
-    const cashCapDecimals = tokenToDecimals(form.cashCap, decimals);
+    const cashCapDecimals = tokenToDecimals('100000000', decimals);
 
     const allCashboxes = await this.Contracts.CashBoxFactory.getAllCashBoxes();
     const newCashboxSymbol = `CB${parseFloat(allCashboxes.length) + 1}`;
 
     const cashSym = await CashErc20C.symbol();
-    const AssetErc20C = this.initContract(form.assetTokenAddrs, ERC20Detailed.abi);
-    const assetSym = await AssetErc20C.symbol();
-    const newCashboxName = `${cashSym}-${assetSym}-${toDecimal(form.assetToCashRate, 4)}`;
+    const newCashboxName = `${cashSym}-OPEN-${toDecimal(form.assetToCashRate, 4)}`;
 
     const tx = await this.Contracts.CashBoxFactory.createCashBox(
-      form.cashTokenAddrs, form.assetTokenAddrs, ethers.utils.parseEther(form.assetToCashRate.toString()),
-      cashCapDecimals, newCashboxName, newCashboxSymbol, form.url);
+      cashTokenAddr, this.contractAddresses.assetTokens.OPEN, ethers.utils.parseEther(form.assetToCashRate.toString()),
+      cashCapDecimals, newCashboxName, newCashboxSymbol, '');
 
     await this.web3.waitForTransaction(tx.hash);
 
