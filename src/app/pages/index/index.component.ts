@@ -52,7 +52,7 @@ export class IndexComponent implements OnInit {
   private createDeployForm() {
     this.formdata = new FormGroup({
       cashToken: new FormControl('', [Validators.required]),
-      assetToCashRate: new FormControl('', [Validators.required]),
+      assetToCashRate: new FormControl('', [Validators.required, Validators.min(Number.MIN_VALUE)]),
       cashCap: new FormControl({ value: '100,000,000', disabled: true }),
     });
   }

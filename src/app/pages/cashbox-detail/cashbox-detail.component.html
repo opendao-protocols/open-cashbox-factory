@@ -128,16 +128,6 @@
                                                 <td>{{ toDecimalDisp(contractData.cashboxValuation, 2) }}
                                                     {{ contractData.cashTokenSymbol }}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Asset Explorer:</td>
-                                                <td>
-                                                    <span *ngIf="contractData.cashboxUrl">
-                                                        <a href="{{ contractData.cashboxUrl }}" target="_blank"
-                                                            class="link">Link</a>
-                                                    </span>
-                                                    <span *ngIf="!contractData.cashboxUrl">-</span>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

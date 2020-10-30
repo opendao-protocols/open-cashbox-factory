@@ -153,10 +153,6 @@ export class CashboxDetailComponent implements OnInit {
         this.contractData.assetEnabled = bool;
       });
     });
-
-    CashboxC.url().then(url => {
-      this.contractData.cashboxUrl = url;
-    });
   }
 
   private fetchBalances() {
