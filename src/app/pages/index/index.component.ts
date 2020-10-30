@@ -53,7 +53,7 @@ export class IndexComponent implements OnInit {
     this.formdata = new FormGroup({
       cashToken: new FormControl('', [Validators.required]),
       assetToCashRate: new FormControl('', [Validators.required]),
-      cashCap: new FormControl({value: '100,000,000', disabled: true}),
+      cashCap: new FormControl({ value: '100,000,000', disabled: true }),
     });
   }
 
@@ -125,16 +125,21 @@ export class IndexComponent implements OnInit {
     }
     this.cashBoxData = [];
     for (const cashboxAddress of cashBoxes) {
-      const cashbox = {} as any;
-      cashbox.cashboxAddress = cashboxAddress;
-      this.cashBoxData.push(cashbox);
-      this.initCashbox(cashbox);
+      const CashBoxC = this.initContract(cashboxAddress, CashBox.abi);
+      CashBoxC.stockToken().then(stockAddr => {
+        if (stockAddr.toLowerCase() === this.contractAddresses.assetTokens.OPEN.toLowerCase()) {
+          const cashbox = {} as any;
+          cashbox.cashboxAddress = cashboxAddress;
+          cashbox.CashBoxC = CashBoxC;
+          this.cashBoxData.push(cashbox);
+          this.initCashbox(cashbox);
+        }
+      });
     }
   }
 
   private async initCashbox(cashbox) {
-    const CashBoxC = this.initContract(cashbox.cashboxAddress, CashBox.abi);
-    CashBoxC.name().then(name => {
+    cashbox.CashBoxC.name().then(name => {
       cashbox.name = name;
     });
   }
