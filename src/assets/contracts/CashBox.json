@@ -226,8 +226,8 @@
             "type": "event"
         },
         {
-            "payable": true,
-            "stateMutability": "payable",
+            "payable": false,
+            "stateMutability": "nonpayable",
             "type": "fallback"
         },
         {
@@ -712,6 +712,21 @@
         {
             "constant": true,
             "inputs": [],
+            "name": "stockTokenCashValuation",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
             "name": "contractCashValuation",
             "outputs": [
                 {
@@ -779,15 +794,6 @@
                 }
             ],
             "name": "redeemStockToken",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [],
-            "name": "kill",
             "outputs": [],
             "payable": false,
             "stateMutability": "nonpayable",
