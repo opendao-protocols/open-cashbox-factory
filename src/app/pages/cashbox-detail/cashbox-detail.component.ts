@@ -232,11 +232,12 @@ export class CashboxDetailComponent implements OnInit {
           this.modalData.content = `CashBox is Full, No More Deposits!`;
         }
       }
-    } else {
-      this.modalData.content = `You will receive ${this.userInput.buyCashbox.amt} CashBox Tokens for depositing ${this.userInput.buyCashbox.amt} ${this.contractData.cashTokenSymbol}`;
-      this.modalData.buttonText = 'Buy';
-      this.modalData.funcCall = this.buyCashBoxToken.bind(this);
-    }
+      else {
+        this.modalData.content = `You will receive ${this.userInput.buyCashbox.amt} CashBox Tokens for depositing ${this.userInput.buyCashbox.amt} ${this.contractData.cashTokenSymbol}`;
+        this.modalData.buttonText = 'Buy';
+        this.modalData.funcCall = this.buyCashBoxToken.bind(this);
+      }
+    } 
     $('#cashboxModal').modal('show');
   }
 

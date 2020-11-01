@@ -53,7 +53,7 @@ export class IndexComponent implements OnInit {
     this.formdata = new FormGroup({
       cashToken: new FormControl('', [Validators.required]),
       assetToCashRate: new FormControl('', [Validators.required, Validators.min(Number.MIN_VALUE)]),
-      cashCap: new FormControl({ value: '100,000,000', disabled: true }),
+      cashCap: new FormControl({ value: '100000000', disabled: false }),
     });
   }
 
@@ -150,7 +150,7 @@ export class IndexComponent implements OnInit {
 
     const CashErc20C = this.initContract(cashTokenAddr, ERC20Detailed.abi);
     const decimals = await CashErc20C.decimals();
-    const cashCapDecimals = tokenToDecimals('100000000', decimals);
+    const cashCapDecimals = tokenToDecimals(form.cashCap, decimals);
 
     const allCashboxes = await this.Contracts.CashBoxFactory.getAllCashBoxes();
     const newCashboxSymbol = `CB${parseFloat(allCashboxes.length) + 1}`;
