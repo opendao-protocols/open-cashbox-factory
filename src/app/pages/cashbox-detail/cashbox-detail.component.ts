@@ -206,6 +206,9 @@ export class CashboxDetailComponent implements OnInit {
 
   public hideModal() {
     $('#cashboxModal').modal('hide');
+    this.modalData.content = null;
+    this.modalData.buttonText = null;
+    this.modalData.funcCall = this.hideModal.bind(this);
   }
 
   public async preBuyCashBoxToken() {
@@ -226,7 +229,7 @@ export class CashboxDetailComponent implements OnInit {
     if (parseFloat(cashValuationCap) > 0) {
       if (parseFloat(contractCashValuation) + parseFloat(amountInDec) > parseFloat(cashValuationCap)) {
         this.modalData.buttonText = 'OK';
-        this.modalData.funcCall = this.hideModal;
+        this.modalData.funcCall = this.hideModal.bind(this);
 
         let cashBoxPurchasable: any = parseFloat(cashValuationCap) - parseFloat(contractCashValuation);
         cashBoxPurchasable = decimalsToToken(cashBoxPurchasable, cashDecimals);
@@ -281,7 +284,7 @@ export class CashboxDetailComponent implements OnInit {
     if (input <= stockValuation) {
       this.modalData.content = `You should receive ${input / stockToCashRate} ${this.contractData.assetTokenSymbol}`;
     } else {
-      this.modalData.content = `You should receive ${stockValuation} ${this.contractData.assetTokenSymbol} 
+      this.modalData.content = `You should receive ${contractStockTokenBalance} ${this.contractData.assetTokenSymbol} 
       and ${input - stockValuation} ${this.contractData.cashTokenSymbol}`;
     }
     this.modalData.buttonText = 'Redeem';
@@ -318,9 +321,9 @@ export class CashboxDetailComponent implements OnInit {
     const redeemValue = input * stockToCashRate;
 
     if (redeemValue > contractCashBalance) {
-      this.modalData.content = `CashBox does not have enough liquidity, please reduce amount for redemption and try again`;
+      this.modalData.content = `CashBox does not have enough liquidity. Please reduce the amount.`;
       this.modalData.buttonText = 'OK';
-      this.modalData.funcCall = this.hideModal;
+      this.modalData.funcCall = this.hideModal.bind(this);
     } else {
       this.modalData.content = `Yoy will receive ${redeemValue} ${this.contractData.cashTokenSymbol} for ${input} ${this.contractData.assetTokenSymbol}`;
       this.modalData.buttonText = 'Sell';
