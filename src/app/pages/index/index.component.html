@@ -6,30 +6,10 @@
                     <div class="portlet__head">
                         <div class="portlet__head-caption">
                             <div class="portlet__head-title">
-                                <div class="row" style="
-                                padding-top: 1em;
-                                padding-bottom: 1em;">
-                                    <div class="col-md-7">
-                                        <h3 *ngIf="!showAllCashBoxes" class="portlet__head-text">Your Deployed CashBoxes
-                                        </h3>
-                                        <h3 *ngIf="showAllCashBoxes" class="portlet__head-text">All Deployed CashBoxes
-                                        </h3>
-
+                                <div class="row" style="padding-top: 1em; padding-bottom: 1em;">
+                                    <div class="col-md-12">
+                                        <h3 class="portlet__head-text">All Deployed CashBoxes</h3>
                                     </div>
-                                    <div class="col-md-5">
-
-                                        <button *ngIf="!showAllCashBoxes"
-                                            class="btn btn-rg btn-secondary btn-pink btn-block"
-                                            style="background: #FA596B !important; color: #fff !important; "
-                                            (click)="toggleAllCashboxSwitch()">View All CashBoxes
-                                        </button>
-                                        <button *ngIf="showAllCashBoxes"
-                                            class="btn btn-rg btn-secondary btn-pink btn-block"
-                                            style="background: #FA596B !important; color: #fff !important; "
-                                            (click)="toggleAllCashboxSwitch()">View Your CashBoxes
-                                        </button>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>

@@ -32,7 +32,6 @@ export class IndexComponent implements OnInit {
   public contractAddresses: any;
 
   public cashBoxData = [];
-  public showAllCashBoxes = false;
   public isAdmin = false;
 
   constructor(private sharedService: SharedService) {
@@ -122,12 +121,7 @@ export class IndexComponent implements OnInit {
   }
 
   private async initData() {
-    let cashBoxes;
-    if (this.showAllCashBoxes === false) {
-      cashBoxes = await this.Contracts.CashBoxFactory.getCashBoxesByUser(this.userAddress);
-    } else if (this.showAllCashBoxes === true) {
-      cashBoxes = await this.Contracts.CashBoxFactory.getAllCashBoxes();
-    }
+    const cashBoxes = await this.Contracts.CashBoxFactory.getAllCashBoxes();
     this.cashBoxData = [];
     for (const cashboxAddress of cashBoxes) {
       const CashBoxC = this.initContract(cashboxAddress, CashBox.abi);
@@ -170,12 +164,6 @@ export class IndexComponent implements OnInit {
     await this.web3.waitForTransaction(tx.hash);
 
     this.createDeployForm();
-    this.initData();
-  }
-
-  public toggleAllCashboxSwitch() {
-    this.cashBoxData = [];
-    this.showAllCashBoxes = !this.showAllCashBoxes;
     this.initData();
   }
 
