@@ -21,5 +21,6 @@ export const blockchainConstants = {
       OPEN: '0x48098E5B9aAF412C96e230F14688A8D6f8FfE340',
     }
   },
+  admin: '0xa13b3E79f2ed49BC05Af2274dC509D73a75cAFE2',
   infuraID: 'e8f20dc6c35d4e50a38aed78cc360f30',
 };

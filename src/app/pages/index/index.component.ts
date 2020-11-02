@@ -33,6 +33,7 @@ export class IndexComponent implements OnInit {
 
   public cashBoxData = [];
   public showAllCashBoxes = false;
+  public isAdmin = false;
 
   constructor(private sharedService: SharedService) {
     this.createDeployForm();
@@ -87,6 +88,10 @@ export class IndexComponent implements OnInit {
     this.initAllContracts(this.contractAddresses);
 
     await this.initData();
+
+    if (this.userAddress.toLowerCase() === blockchainConstants.admin.toLowerCase()) {
+      this.isAdmin = true;
+    }
     cApp.unblockPage();
     // console.log(this.userCashBoxData);
   }
