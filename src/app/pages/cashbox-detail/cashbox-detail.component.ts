@@ -217,6 +217,12 @@ export class CashboxDetailComponent implements OnInit {
     const contractCashValuation = await CashBoxC.contractCashValuation();
     const cashValuationCap = await CashBoxC.cashValauationCap();
 
+    // set default action
+    this.modalData.content = `You will receive ${this.userInput.buyCashbox.amt} CashBox Tokens for depositing ${this.userInput.buyCashbox.amt} ${this.contractData.cashTokenSymbol}`;
+    this.modalData.buttonText = 'Buy';
+    this.modalData.funcCall = this.buyCashBoxToken.bind(this);
+
+    // handle specific cases
     if (parseFloat(cashValuationCap) > 0) {
       if (parseFloat(contractCashValuation) + parseFloat(amountInDec) > parseFloat(cashValuationCap)) {
         this.modalData.buttonText = 'OK';
@@ -232,12 +238,7 @@ export class CashboxDetailComponent implements OnInit {
           this.modalData.content = `CashBox is Full, No More Deposits!`;
         }
       }
-      else {
-        this.modalData.content = `You will receive ${this.userInput.buyCashbox.amt} CashBox Tokens for depositing ${this.userInput.buyCashbox.amt} ${this.contractData.cashTokenSymbol}`;
-        this.modalData.buttonText = 'Buy';
-        this.modalData.funcCall = this.buyCashBoxToken.bind(this);
-      }
-    } 
+    }
     $('#cashboxModal').modal('show');
   }
 
