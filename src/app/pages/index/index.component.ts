@@ -87,8 +87,7 @@ export class IndexComponent implements OnInit {
     this.initAllContracts(this.contractAddresses);
 
     await this.initData();
-
-    if (this.userAddress.toLowerCase() === blockchainConstants.admin.toLowerCase()) {
+    if (blockchainConstants.admins.includes(this.userAddress)) {
       this.isAdmin = true;
     }
     cApp.unblockPage();
